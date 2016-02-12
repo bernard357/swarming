@@ -57,10 +57,8 @@ class MetaClient(object):
 
     def on_connect(self, mosq, obj, rc, dummy):
         print "connect", self.client._host, self.client._port, rc
-        if rc == 0:
-            self.state = 'connected'
-            for channel in self.channels:
-                mosq.subscribe(channel)
+        for channel in self.channels:
+            mosq.subscribe(channel)
 
     def on_message(self, mosq, obj, msg):
         print msg.topic, msg.mid
