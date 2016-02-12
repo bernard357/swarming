@@ -55,7 +55,7 @@ class MetaClient(object):
     def on_disconnect(self, mosq, obj, rc):
         print "disconnect", mosq
 
-    def on_connect(self, mosq, obj, rc):
+    def on_connect(self, mosq, obj, rc, dummy):
         print "connect", self.client._host, self.client._port, rc
         if rc == 0:
             self.state = 'connected'
