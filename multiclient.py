@@ -19,11 +19,8 @@ class MultiClient(object):
             client.connect_async(server)
 
     def on_connect(self, client, userdata, rc, dummy):
-        if rc == 0:
-            for channel in self.channels:
-                client.subscribe(channel, qos=2)
-        else:
-            raise Exception('Connection error %i' % rc)
+        for channel in self.channels:
+            client.subscribe(channel, qos=2)
 
     def on_disconnect(self, client, userdata, rc):
         print "diconnected", rc
