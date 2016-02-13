@@ -30,17 +30,18 @@ class Indexer(MultiClient):
             print(u"Strange topics : %s" % topics)
 
     def lazy_index(self, dt):
-        idx = dt.date().strftime('logstash-%Y.%m.%d')
+#        idx = dt.date().strftime('logstash-%Y.%m.%d')
+        idx = 'swarm'
         if idx != self.last_index and not self.es.indices.exists(idx):
             self.last_index = idx
             self.es.indices.create(idx, body={
                 'mappings': {
                     'ping': {
                         'properties': {
-                            '@timestamp': { 'type': 'date' },
+                            'stamp': { 'type': 'date' },
                             'message': { 'type': 'string', "index" : "not_analyzed" },
-                            'agent': { 'type': 'string' },
-                            'target': { 'type': 'string' },
+                            'agent': { 'type': 'string', "index" : "not_analyzed" },
+                            'target': { 'type': 'string', "index" : "not_analyzed" },
                             'avg': { 'type': 'double' },
                             'min': { 'type': 'double' },
                             'max': { 'type': 'double' },
@@ -50,9 +51,9 @@ class Indexer(MultiClient):
                     },
                     'rip': {
                         'properties': {
-                            '@timestamp': {
-                                'type': 'date'
-                            }
+                            'stamp': { 'type': 'date' },
+                            'message': { 'type': 'string', "index" : "not_analyzed" },
+                            'agent': { 'type': 'string', "index" : "not_analyzed" }
                         }
                     }
                 }
@@ -64,8 +65,7 @@ class Indexer(MultiClient):
         idx = self.lazy_index(dt)
         agent = topics[2]  # Assuming just agent is dying
         print(self.es.index(index=idx, doc_type='rip', body={
-            '@timestamp': dt.strftime('%Y-%m-%dT%H:%M:%S.000+01:00'),
-            '@version': 1,
+            'stamp': dt.strftime('%Y-%m-%d %H:%M:%S'),
             'message': "",
             'agent': agent
         }))
@@ -82,8 +82,7 @@ class Indexer(MultiClient):
             min_, avg, max_, stddev = values[u'Round trip']
         loss = values[u'loss']
         print(self.es.index(index=idx, doc_type='ping', body={
-            '@timestamp': dt.strftime('%Y-%m-%dT%H:%M:%S.000+01:00'),
-            '@version': 1,
+            'stamp': dt.strftime('%Y-%m-%d %H:%M:%S'),
             'message': "",
             'agent': agent,
             'target': topics[1],
