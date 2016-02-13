@@ -18,7 +18,7 @@ class MultiClient(object):
             self.servers.append(client)
             client.connect_async(server)
 
-    def on_connect(self, client, userdata, rc):
+    def on_connect(self, client, userdata, rc, dummy):
         if rc == 0:
             for channel in self.channels:
                 client.subscribe(channel, qos=2)
