@@ -37,9 +37,15 @@ class Indexer(MultiClient):
                 'mappings': {
                     'ping': {
                         'properties': {
-                            '@timestamp': {
-                                'type': 'date'
-                            }
+                            '@timestamp': { 'type': 'date' },
+                            'message': { 'type': 'string', "index" : "not_analyzed" },
+                            'agent': { 'type': 'string' },
+                            'target': { 'type': 'string' },
+                            'avg': { 'type': 'double' },
+                            'min': { 'type': 'double' },
+                            'max': { 'type': 'double' },
+                            'stddev': { 'type': 'double' },
+                            'loss': { 'type': 'double' }
                         }
                     },
                     'rip': {
