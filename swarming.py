@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import paho.mqtt.client as paho
 import socket
 import random
