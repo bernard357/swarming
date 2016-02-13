@@ -65,7 +65,7 @@ class Indexer(MultiClient):
         idx = self.lazy_index(dt)
         agent = topics[2]  # Assuming just agent is dying
         print(self.es.index(index=idx, doc_type='rip', body={
-            'stamp': dt.strftime('%Y-%m-%d %H:%M:%S'),
+            'stamp': dt.strftime('%Y-%m-%dT%H:%M:%S'),
             'message': "",
             'agent': agent
         }))
@@ -82,7 +82,7 @@ class Indexer(MultiClient):
             min_, avg, max_, stddev = values[u'Round trip']
         loss = values[u'loss']
         print(self.es.index(index=idx, doc_type='ping', body={
-            'stamp': dt.strftime('%Y-%m-%d %H:%M:%S'),
+            'stamp': dt.strftime('%Y-%m-%dT%H:%M:%S'),
             'message': "",
             'agent': agent,
             'target': topics[1],
